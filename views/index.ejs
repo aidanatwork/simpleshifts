@@ -1,0 +1,121 @@
+<!-- views/index.ejs -->
+<% include partials/head %>
+<% include partials/header %>
+<body id="body" class="<% if (user) { %>loggedIn<% } %>">
+	<% include partials/title %>
+	 <!-- show any messages that come back with authentication -->
+	<% if (!user) { %>
+		<p>Welcome! Please <a href="/login">log in</a>.</p>
+	<% } else { %>
+		<p>Hello, <%= user.local.email %>. View your <a href="/profile">profile</a>.</p>
+		<p><a href="/logout" class="btn btn-default btn-sm">Logout</a></p>
+	<% } %>
+
+    <% if (message) { %>
+    <div class="alert alert-danger">
+		<%= message %>
+	</div>
+    <% } %>
+	<div id="forms">
+		<div id="mng-emp-form" name="mng-emp-form" class="hidden form">
+			<div id="mng-emp-wrapper">
+				<p>Manage Doctors</p>
+				<select id="emp-select" class="empList"></select>
+				<div class="button-box">
+					<button id="edit-emp-show">Edit</button>		
+					<button id="delete-emp">Delete</button>
+					<button id="add-emp-show">New</button>
+					<button id="mng-emp-cancel">Cancel</button>	
+				</div>
+			</div>
+			<div id="edit-emp-wrapper" class="hidden">
+				<p>Edit Doctor Name</p>
+				<input id="edit-emp" type="text" placeholder="enter name" />
+				<button id="edit-emp-submit">Submit</button>
+				<button id="edit-emp-cancel">Cancel</button>
+			</div>
+			<div id="add-emp-wrapper" class="hidden">
+				<p>Add a Doctor</p>
+				<label for="add-empName">Name</label>
+				<input id="add-empName" type="text" name="add-shiftDate">
+				<div class="button-box">
+					<button id="add-emp-submit">Submit</button>	
+					<button id="add-emp-back">Back</button>
+				</div>
+			</div>
+		</div>
+		<div id="add-shift-form" name="add-shift-form" class="hidden form">
+			<p>Add a Shift</p>
+			<label for="add-shiftEmp">Employee</label>
+			<select id="add-shiftEmp" class="empList" name="add-shiftemp">
+			</select>
+			<label for="add-shiftType">Type</label>
+			<select id="add-shiftType" name="add-shiftType">
+				<option value="UC">UC</option>
+				<option value="Call">Call</option>
+				<option value="Vacation">Vacation</option>			
+			</select><br>
+			<label for="add-shiftDate">Date</label>
+			<input id="add-shiftDate" type="date" name="add-shiftDate" placeholder="2017-12-18">
+			<div class="button-box">
+				<button id="add-shift-submit">Submit</button>	
+				<button id="add-shift-cancel">Cancel</button>
+			</div>
+		</div>
+
+		<div id="edit-shift-form" name="edit-shift-form" class="hidden form">
+			<p>Edit Shift</p>
+			<label for="ed-shiftEmp">Employee</label>
+			<select id="ed-shiftEmp" class="empList" name="ed-shiftemp">
+			</select>
+			<label for="ed-shiftType">Type</label>
+			<select id="ed-shiftType" name="ed-shiftType">
+				<option value="UC">UC</option>
+				<option value="Call">Call</option>
+				<option value="Vacation">Vacation</option>			
+			</select><br>
+			<label for="ed-shiftDate">Date</label>
+			<input id="ed-shiftDate" type="date" name="ed-shiftDate" placeholder="2017-12-18">
+			<div class="button-box">
+				<button id="edit-shift-submit">Submit</button>	
+				<button id="edit-shift-cancel">Cancel</button>
+				<button id="delete-shift">Delete</button>
+			</div>
+		</div>
+
+		<div id="batch-edit-form" name="batch-edit-form" class="hidden form">
+			<p>Multi Edit</p>
+			<div class="button-box">
+				<button id="batch-edit-save">Save</button>
+				<button id="batch-edit-cancel">Cancel</button>
+			</div>
+		</div>
+
+		<div id='emp-form' class="hidden form">
+			<p>Add an Employee</p>
+			<label for="emp-fname">First Name</label>
+			<input type="text" id="emp-fname" name="emp-fname" placeholder="Firstname">
+
+			<label for="emp-lname">Last Name</label>
+			<input type="text" id="emp-lname" name="emp-lname" placeholder="Lastname">
+			<input type="submit">		
+		</div>
+
+		<div id='onedoc-form' name='onedoc-form' class='hidden form'>
+			<p>Filter shifts by doctor</p>
+			<label for="filterByDoc">Select Doctor</label>
+			<select id="filterByDoc" class="empList" name="filterByDoc">
+			</select>
+			<button id="filterSubmit">Submit</button>
+			<button id="showAllDocs">Show All</button>
+		</div>
+
+	</div>
+	<div id='calendar'></div>
+	<br />
+	<% if (content) { %>
+	<div id="content-<%= content._id %>" class="content"><%- content.html %></div>
+	<% } %>
+	<% include partials/footer %>
+</body>
+</html>

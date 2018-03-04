@@ -1,0 +1,48 @@
+{
+  "name": "simpleshifts",
+  "version": "1.0.0-rc.1",
+  "description": "A simple call-scheduling calendar for physician offices",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aidanatwork/simpleshifts.git"
+  },
+  "author": "Aidan Doherty",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aidanatwork/simpleshifts/issues"
+  },
+  "homepage": "https://github.com/aidanatwork/simpleshifts#readme",
+  "devDependencies": {
+    "nodemon": "^1.13.3"
+  },
+  "dependencies": {
+    "async": "^2.6.0",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
+    "fullcalendar": "^3.8.2",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "jquery": "^3.3.1",
+    "jquery-datepicker": "^1.11.5",
+    "method-override": "^2.3.10",
+    "moment": "^2.20.1",
+    "mongoose": "^5.0.3",
+    "morgan": "^1.9.0",
+    "nocache": "^2.0.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "pkginfo": "^0.4.1"
+  }
+}

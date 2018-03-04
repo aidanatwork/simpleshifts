@@ -1,0 +1,150 @@
+/* main.css
+	Styles customizing full calendar
+*/
+
+* {
+	font-family:'Avenir', Arial, sans-serif;
+}
+
+#topbar {
+	font-size: 2em;
+	margin-bottom: 0.5em;
+}
+
+#topbar a {
+	color: #000;
+	text-decoration: none;
+}
+
+.hidden {
+	display: none;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+.form {
+	background:#42f4eb;
+	border-radius:5px;
+	margin:10px 0;
+	padding:6px;
+}
+
+.form p {
+	font-weight: bold;
+}
+
+.fc-event.UC, .fc-event-dot.UC {
+	background-color: blue;
+	border-color: blue;
+} 
+
+.fc-event.Call, .fc-event-dot.Call {
+	background-color: red;
+	border-color: red;
+} 
+
+.fc-event.Vacation, .fc-event-dot.Vacation {
+	background-color: gray;
+	border-color: gray;
+} 
+
+.fc-event.selected, .fc-event.Call.selected,  .fc-event.UC.selected, .fc-event.Vacation.selected {
+	border: #f7c602 solid 3px;
+}
+
+.fc-mngEmp-button {
+	display: none;
+}
+
+.loggedIn .fc-button.fc-mngEmp-button {
+	display: block;
+}
+
+.unsaved .fc-view {
+	background: #fff1af;
+}
+
+td.unsaved {
+	background: #fff1af;
+}
+
+.unsaved .fc-saveChgs-button, .unsaved .fc-cancelSave-button {
+	display: block;
+}
+.ui-datepicker .ui-widget-content {
+	background: #fff;
+}
+#ui-datepicker-div {
+	background: #fff;
+	border: #ddd solid 1px;
+}
+.button-box {
+	display: flex;
+	margin: 5px 0;
+}
+
+select {
+	margin-bottom: 3px;
+}
+
+#edit-shift-cancel {
+	margin-left: 1em;
+}
+
+#delete-shift {
+	margin-left: 10em;
+}
+
+div.fc-button-group {
+	display: flex
+}
+
+.alert {
+	border-radius: 5px;
+	margin-bottom:3px;
+	padding: 3px 5px;
+}
+
+.alert-danger {
+	background-color: #fc4141;
+}
+
+.alert-success {
+	background-color: #42f4a7;
+}
+
+
+#login-wrapper input[name="email"], #signup-wrapper input[name="email"] {
+	margin-left: 27px;
+}
+
+#footer {
+	width: 100%	
+}
+#footer p {
+	display: block;
+	font-size: 0.75em;
+	margin:0 auto;
+	width: 16em;
+}
+@media all and (max-width : 480px) {
+	.fc-center, .fc-center .fc-button-group {
+		margin-top: 0.5em;
+		width: 100%;
+	}
+	.fc-center .fc-button-group button {
+		width: 50%;
+	}
+	div.fc-button-group button {
+		flex: 1;
+	}
+	.button-box button {
+		flex: 1;
+		height: 3em;
+	}
+	#edit-shift-cancel, #delete-shift {
+		margin-left: 0;
+	}
+}

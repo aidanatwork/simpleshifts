@@ -1,0 +1,62 @@
+<!-- views/profile.ejs -->
+<% include partials/head %>
+<% include partials/header %>
+<body>
+	<div class="container">
+        <% include partials/title %>
+		<div class="page-header text-center">
+		    <h1><span class="fa fa-anchor"></span> Profile</h1>
+             <!-- show any messages that come back with authentication -->
+            <% if (message) { %>
+                <div class="alert alert-danger">
+                    <%= message %>
+                </div>
+            <% } %>
+            <% if (success) { %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+            <% } %>
+            <div id="client-side-messages">
+                <div class="alert alert-danger hidden"></div>
+                <div class="alert alert-success hidden"></div>
+            </div>
+		    <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+		</div>
+	</div>
+	<div class="row">
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span>Account Details</h3>
+
+                    <p id="user-details-email">
+                        <strong>email: </strong><span><%= user.local.email %></span><br>
+                    </p>
+                <div id="profile-email-update-form">
+                    <h3>Change Email</h3>
+                    <div id="profile-email-form">
+                        <input name="email" type="text" value="<%= user.local.email %>" />
+                    </div>
+                    <!-- TODO - add client-side validation to prevent submitting empty or invalid emails -->
+                    <!-- TODO - disable submit until field value actually changed -->
+                    <input id="profile-email-update-submit" type="submit" />
+                </div>
+                <div id="profile-pwd-update-form">
+                    <h3>Change Password</h3>
+                    <div id="profile-pwd-form">
+                        <input name="pwd" type="text" />
+                    </div>
+                    <input id="profile-pwd-update-submit" type="submit" />
+                </div>
+                <h3>Change Announcements</h3>
+                <div id="announcements-form">  
+                    <textarea form="announcements-form" id="announcements-input" cols="40"><% if (content) { %><%= content.html %><% } %></textarea><br>
+                    <input id="announcementsSubmit" type="submit" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include partials/footer %>
+</body>
+</html>

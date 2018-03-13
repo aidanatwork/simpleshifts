@@ -8,7 +8,9 @@ var app          = express();
 var port         = process.env.PORT || 8080;
 var sslport      = process.env.SSLPORT || 8443; 
 var mongoose     = require('mongoose');
+var nodemailer   = require('nodemailer');
 var passport     = require('passport');
+var crypto       = require('crypto');
 
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');

@@ -6,6 +6,7 @@
         <% include partials/title %>
 		<div class="page-header text-center">
 		    <h1><span class="fa fa-anchor"></span> Profile</h1>
+            <% include partials/client-side-error.ejs%>
              <!-- show any messages that come back with authentication -->
             <% if (message) { %>
                 <div class="alert alert-danger">
@@ -29,14 +30,13 @@
         <div class="col-sm-6">
             <div class="well">
                 <h3><span class="fa fa-user"></span>Account Details</h3>
-
                     <p id="user-details-email">
                         <strong>email: </strong><span><%= user.local.email %></span><br>
                     </p>
                 <div id="profile-email-update-form">
                     <h3>Change Email</h3>
                     <div id="profile-email-form">
-                        <input name="email" type="text" value="<%= user.local.email %>" />
+                        <input name="email" type="text" required value="<%= user.local.email %>" />
                     </div>
                     <!-- TODO - add client-side validation to prevent submitting empty or invalid emails -->
                     <!-- TODO - disable submit until field value actually changed -->
@@ -45,7 +45,7 @@
                 <div id="profile-pwd-update-form">
                     <h3>Change Password</h3>
                     <div id="profile-pwd-form">
-                        <input name="pwd" type="text" />
+                        <input name="pwd" type="text"/>
                     </div>
                     <input id="profile-pwd-update-submit" type="submit" />
                 </div>

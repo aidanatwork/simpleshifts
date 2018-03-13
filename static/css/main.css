@@ -121,12 +121,12 @@ div.fc-button-group {
 }
 
 #footer {
+	margin:1em 0;
 	width: 100%	
 }
 #footer p {
 	display: block;
 	font-size: 0.75em;
-	margin:0 auto;
 	width: 16em;
 }
 @media all and (max-width : 480px) {

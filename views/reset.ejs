@@ -1,0 +1,35 @@
+<!-- views/reset.ejs -->
+<% include partials/head %>
+<% include partials/header %>
+<body>
+<div class="wrapper" id="reset-wrapper">
+    <% include partials/title %>
+    <h1><span class="fa fa-sign-in"></span> Reset Password</h1>
+    <% include partials/client-side-error.ejs%>
+    <!-- show any messages that come back with authentication -->
+    <% if (message) { %>
+    <div class="alert alert-danger">
+        <%= message %>
+    </div>
+    <% } %>
+    <% if (success) { %>
+    <div class="alert alert-success">
+        <%= success %>
+    </div>
+    <% } %>
+    <% if (token) { %>
+    <!-- RESET FORM -->
+    <form action="/reset/<%= token %>" method="post">
+        <div class="form-group">
+            <label for="password">New Password</label>
+            <input id="password" required type="text" class="form-control" name="password">
+            <label for="confirm">Confirm Password</label>
+            <input id="confirm" required type="text" class="form-control" name="confirm">
+        </div>
+        <button type="submit" class="btn btn-warning btn-lg">Update Password</button>
+    </form>
+    <% } %>
+</div>
+<% include partials/footer %>
+</body>
+</html>

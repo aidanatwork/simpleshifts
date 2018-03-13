@@ -1,9 +1,13 @@
 // api/routes/calRoutes.js
 'use strict';
-const express  = require('express'),
-      mongoose = require('mongoose'),
-      moment   = require('moment'),
-      instance = require('../../config/instance');
+const async      = require('async'),
+      crypto     = require('crypto'),
+      express    = require('express'),
+      instance   = require('../../config/instance'),
+      moment     = require('moment'),
+      mongoose   = require('mongoose'),
+      nodemailer = require('nodemailer'),
+      User       = mongoose.model('User');
 
 //utility functions
 const isLoggedIn = function(req, res, next) {
@@ -33,12 +37,190 @@ module.exports = function(app, passport) {
   app.get('/signup', calCtrl.get_signup);
   //show profile page
   app.get('/profile', isLoggedIn, calCtrl.get_profile);
+  //show forgot password page
+  app.get('/forgot', function(req,res){
+      res.render('forgot.ejs', {
+          title: instance.title, moment: moment, message: '', success:'', user: req.user
+      });
+  });
+  app.get('/reset/:token', function(req, res) {
+    console.log('Token on GET reset: ' + req.params.token);
+    User.findOne({
+        resetPasswordToken: req.params.token/*,
+        resetPasswordExpires: { $gt: Date.now() }*/
+    }, function(err, user){
+      if (!user) {
+        console.log('Err1: ' + err);
+        res.render('reset.ejs', {
+            title: instance.title,
+            moment: moment,
+            message: 'Password reset token is invalid or has expired. Contact your SimpleShifts administrator for assistance.',
+            success: '',
+            token:'',
+            user: false
+        });
+      } else {
+        console.log('Token is valid.');
+        res.render('reset.ejs', {
+            title: instance.title,
+            moment: moment,
+            message: '',
+            success: 'Token is valid. Go ahead and retrieve',
+            token:req.params.token,
+            user: req.user
+        });
+      }
+    });
+  });
 
   //=========================
   // Page Action Routes
   //=========================
   // execute logout
   app.get('/logout', calCtrl.log_out);
+  //process forgot password request
+  app.post('/forgot', function(req,res, next){
+    console.log('Start processing of POST for reset email');
+    async.waterfall([
+        //generate token for the reset
+        function(done) {
+          console.log('1 - generating token...');
+          crypto.randomBytes(20, function(err, buf) {
+            var token = buf.toString('hex');
+            done(err, token);
+          });
+        },
+        //search for the entered user
+        function (token, done) {
+          console.log('2 - searching for user...');
+          User.findOne({ 'local.email': req.body.email }, function(err, user) {
+            if (!user) {
+              res.render('/forgot', {
+                title: instance.title, moment: moment, message: 'User not found', success:'', user: false
+              });
+            }
+            user.resetPasswordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000 //expires in 1 hour
+
+            user.save(function (err) {
+              done(err, token, user);
+            });
+
+          });
+        },
+        //send the reset email
+        function(token, user, done) {
+          console.log('3 - sending the reset email...');
+          var smtpTransport = nodemailer.createTransport({
+            service: instance.emailservice.service,
+            auth: {
+              user: instance.emailservice.user,
+              pass: instance.emailservice.pass
+            },
+            logger: true
+          });
+          var mailOptions = {
+            to: user.local.email,
+            from: instance.emailservice.fromname,
+            subject: 'SimpleShifts Password Reset',
+            text: 'Please click on the following link, or paste it into your browser, to reset your password:\n\n' +
+            'https://' + req.headers.host + '/reset/' + token + '\n\n' +
+            'If you did not request this reset, please ignore this email and your password will remain unchanged.\n'
+          };
+          smtpTransport.sendMail(mailOptions, function(err, info){
+            if (err) {
+              console.log('Error in sendMail: ' + err.message);
+              res.render('forgot.ejs', {
+                  title: instance.title, moment: moment, message:'Failed to create reset link', success: '', user: false
+              });
+            }
+            console.log('Msg sent successfully');
+            res.render('forgot.ejs', {
+              title: instance.title, moment: moment, message:'', success: 'An email has been sent to ' + user.local.email +
+                ' with further instructions.', user: false
+            });
+          });
+        }
+    ], function (err){
+      if (err) {
+        return next(err);
+      }
+      console.log('Error sending password reset link: ' + err);
+      res.render('forgot.ejs', {
+        title: instance.title, moment: moment, message:'', success:'', user:false
+      });
+    });
+  });
+  //process the password reset form
+  app.post('/reset/:token', function(req,res){
+    async.waterfall([
+      function(done) {
+        User.findOne({
+          resetPasswordToken: req.params.token,
+          resetPasswordExpires: {$gt: Date.now()}
+        }, function (err, user) {
+          if (!user) {
+              res.render('reset.ejs', {
+                  title: instance.title,
+                  moment: moment,
+                  message: 'Password reset token is invalid or has expired',
+                  success: '',
+                  token:req.params.token,
+                  user: false
+              });
+          }
+          user.local.password = req.body.password;
+          user.resetPasswordToken = undefined;
+          user.resetPasswordExpires = undefined;
+
+          user.save(function (err) {
+            req.logIn(user, function(err){
+              done(err, user);
+            });
+          });
+        });
+      },
+      function(user, done){
+        var smtpTransport = nodemailer.createTransport({
+            service: instance.emailservice.service,
+            auth: {
+                user: instance.emailservice.user,
+                pass: instance.emailservice.pass
+            },
+            logger: true
+        });
+        var mailOptions = {
+            to: user.local.email,
+            from: instance.emailservice.fromname,
+            subject: 'SimpleShifts Password Reset',
+            text: 'This is a confirmation that the password for your account ' + user.local.email + ' has just been changed.\n' +
+                  'If you did not request this change, please contact your SimpleShifts administrator.'
+        };
+        smtpTransport.sendMail(mailOptions, function(err, info){
+            if (err) {
+                console.log('Error in sendMail: ' + err.message);
+                res.render('reset.ejs', {
+                    title: instance.title, moment: moment, message:'Failed to reset password', success: 'An email has been sent to ' + user.local.email +
+                    ' with further instructions.', user: false
+                });
+            }
+            console.log('Msg sent successfully');
+            res.render('index.ejs', {
+                title: instance.title, moment: moment, message:'', success: 'Success! Your password has been changed.', user: req.user
+            });
+        });
+      }
+    ], function(err){
+      res.render('forgot.ejs', {
+          title: instance.title,
+          moment: moment,
+          message:'There was a problem resetting your password.' +
+                  'Please contact your SimpleShifts administrator.',
+          success:'',
+          user:false
+      });
+    });
+  });
   // process the login form
   // TODO - figure out how to externalize this to controller.js, without losing access to passport
   app.post('/login', function(req,res,next){
@@ -49,11 +231,15 @@ module.exports = function(app, passport) {
         return next(err); 
       }
       if (!user) { 
-        return res.render( 'login.ejs', { title: instance.title, moment: moment,  message: info.message || 'user not found', user: false })
+        return res.render( 'login.ejs', {
+          title: instance.title, moment: moment,  message: info.message || 'user not found', user: false
+        })
       }
       req.logIn(user, function(err) {
         if (err) { return next(err); }
-        return res.render( 'login.ejs', { title: instance.title, moment: moment, message: '', user: req.user });
+        return res.render( 'login.ejs', {
+          title: instance.title, moment: moment, message: '', user: req.user
+        });
       });
     })(req, res, next);
   });
@@ -65,13 +251,17 @@ module.exports = function(app, passport) {
     }, function(err, user, info) {
       if (err) { 
         return next(err); 
-      } 
+      }
       if (!user) { 
-        return res.render( 'signup.ejs', { title: instance.title, moment: moment, message: info.message || 'user already taken', user: false })
+        return res.render( 'signup.ejs', {
+          title: instance.title, moment: moment, message: info.message || 'user already taken', user: false
+        })
       }
       req.logIn(user, function(err) {
         if (err) { return next(err); }
-        return res.render( 'profile.ejs', { title: instance.title, moment: moment, content: '', message: '', success: 'success! new user created',  user: req.user });
+        return res.render( 'profile.ejs', {
+          title: instance.title, moment: moment, content: '', message: '', success: 'success! new user created',  user: req.user
+        });
       });
     })(req, res, next);
   });

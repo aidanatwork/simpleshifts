@@ -1,6 +1,6 @@
 {
   "name": "simpleshifts",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "A simple call-scheduling calendar for physician offices",
   "main": "server.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "mongoose": "^5.0.3",
     "morgan": "^1.9.0",
     "nocache": "^2.0.0",
+    "nodemailer": "^4.6.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",

@@ -3,6 +3,7 @@
 <% include partials/header %>
 <body id="body" class="<% if (user) { %>loggedIn<% } %>">
 	<% include partials/title %>
+    <% include partials/client-side-error.ejs%>
 	 <!-- show any messages that come back with authentication -->
 	<% if (!user) { %>
 		<p>Welcome! Please <a href="/login">log in</a>.</p>

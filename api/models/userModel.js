@@ -6,8 +6,10 @@ var bcrypt   = require('bcrypt');
 
 var UserSchema = new Schema({
 	local : {
-		email	 : String,
-		password : String
+		email	 : { type: String, required: true, unique: true },
+		password : { type: String, required: true },
+        resetPasswordToken: String,
+        resetPasswordExpires: Date
 	}
 });
 

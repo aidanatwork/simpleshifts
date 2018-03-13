@@ -1,5 +1,7 @@
 //init.js
 $(document).ready(function() {
+	//init namespace
+    SimpleShifts = {};
 	//utility constants
 	var port = '';
 	if(location.port){
@@ -7,8 +9,22 @@ $(document).ready(function() {
 	};
 	var protocol = location.protocol;
 	var baseURL = location.hostname;
-
-	//utility funtions
+	// utility funtions
+    var validate = function(entry, type){
+        if (type && type === 'email') {
+            var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return reg.test(entry);
+        }
+        return Boolean(entry.length > 1);
+    };
+    var showClientSideErr = function (err) {
+        $('#clientside-error').text(err);
+    	$('#clientside-error').removeClass('hidden');
+	};
+    var hideClientSideErr = function() {
+        $('#clientside-error').addClass('hidden');
+        $('#clientside-error').text('Error');
+	};
 	var batchEditCancel = function() {
 		$('#calendar').fullCalendar('refetchEvents');
 		SimpleShifts.updatesHopper = [];
@@ -23,7 +39,7 @@ $(document).ready(function() {
 				return obj[i].id;
 				break;    			
 			} else if (i === obj.length-1) {
-				console.log('empId for ' + name + ' not found');
+				return ('empId for ' + name + ' not found');
 			}
 		}
 	};
@@ -33,7 +49,7 @@ $(document).ready(function() {
 		        return classList[i];
 		        break;
 		    } else if (i === classList.length-1) {
-				console.log('shiftType not found');
+				return ('shiftType not found');
 			}
 		      		
 		}
@@ -55,7 +71,6 @@ $(document).ready(function() {
 	};
 	//activate admin functions
 	var activateAdminMode = function () {
-		console.log('activateAdminMode');
 		//activate editable
 		$('#calendar').fullCalendar('option','editable','true');
 		//activate dayClick
@@ -113,7 +128,6 @@ $(document).ready(function() {
 		$('#add-shift-submit').click(function(){
 			var empId = $('#add-shiftEmp').val();
 			var title = $('#add-shiftEmp option:selected').text();
-			console.log('title: ' + title);
 			var start = $('#add-shiftDate').val();
 			var end = start;
 			var classArr = [title.toLowerCase().replace(/ /g,'-'),$('#add-shiftType').val()];
@@ -158,7 +172,6 @@ $(document).ready(function() {
 			    "className": classArr,
 			    "shiftType": classArr[1]
 			};
-			console.table(updateShiftData);
 			SimpleShifts.api.shifts.singleUpdate(SimpleShifts.selectedEvent.id,updateShiftData);
 		});
 		$('#edit-shift-cancel').click(function(){
@@ -209,9 +222,7 @@ $(document).ready(function() {
 		});
 	};
 
-	//retrieve data for the calendar
-	SimpleShifts = {};
-	SimpleShifts.version = '1.0.0-rc.1';
+	//init and retrieve data for the calendar
 	SimpleShifts.selectedEvent = "none";
 	SimpleShifts.selectedDay = "none";
 	SimpleShifts.updatesHopper = [];
@@ -229,9 +240,6 @@ $(document).ready(function() {
 	SimpleShifts.api.content = {};
 	SimpleShifts.api.user = {};
 	SimpleShifts.api.throwErr = function (jqxhr, textStatus, errorThrown) {
-		console.log('Request failed.\njqxhr: \n');
-		//console.table(jqxhr);
-		console.log('\ntextStatus: ' + textStatus + '\nerrorThrown: ' + errorThrown);
 		if ($('#client-side-messages .alert-danger:first').length ) {
 			$('#client-side-messages .alert-danger:first').text(errorThrown || 'Error on this action.');
 			$('#client-side-messages .alert-danger:first').removeClass('hidden');
@@ -247,7 +255,6 @@ $(document).ready(function() {
 			processData: false,
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('User ' + newCredentials.updateType + ' successfully updated');
 				$('#client-side-messages .alert-success:first').text('User ' + newCredentials.updateType + ' successfully updated');
 				$('#client-side-messages .alert-success:first').removeClass('hidden');
 				if (newCredentials.updateType === 'email') {
@@ -261,7 +268,6 @@ $(document).ready(function() {
 	};
 	//START - Content ajax functions
 	SimpleShifts.api.content.update = function(newContent) {
-		console.log('updating content for ' + newContent.name);
 		$.ajax({
 			url: SimpleShifts.contentUrl + '/' + newContent.name,
 			method: 'PUT',
@@ -270,7 +276,6 @@ $(document).ready(function() {
 			processData: false,
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('Content field for ' + newContent.name + ' successfully updated');
 				$('#client-side-messages .alert-success:first').text('Content successfully updated');
 				$('#client-side-messages .alert-success:first').removeClass('hidden');
 			},
@@ -289,7 +294,6 @@ $(document).ready(function() {
 			dataType: "text", //format for the response
 			processData: false,
 			success: function () {
-				console.log('Emp successfully added');
 				SimpleShifts.api.employees.getAll();
 				$('#add-empName').val('');
 		    	$('.form').addClass('hidden');
@@ -305,7 +309,6 @@ $(document).ready(function() {
 			method: 'DELETE',
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('Emp #' + empId + ' successfully deleted');	
 				SimpleShifts.api.employees.getAll();
 				populateEmpLists();
 				$('#calendar').fullCalendar('refetchEvents');
@@ -317,7 +320,6 @@ $(document).ready(function() {
 		});
 	};
 	SimpleShifts.api.employees.singleUpdate = function(empId, empUpdate) {
-		console.log('updating empId #' + empId);
 		$.ajax({
 			url: SimpleShifts.empUrl + '/' + empId,
 			method: 'PUT',
@@ -326,7 +328,6 @@ $(document).ready(function() {
 			processData: false,
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('Emp #' + empId + ' successfully updated');
 				SimpleShifts.api.employees.getAll();
 				populateEmpLists();
 				$('#calendar').fullCalendar('refetchEvents');
@@ -345,7 +346,6 @@ $(document).ready(function() {
 			method: 'GET',
 			dataType: "text", //format for the response
 			success: function (data) {
-				console.log('Emps successfully retrieved');
 				SimpleShifts.empData = JSON.parse(data);
 				populateEmpLists();
 			},
@@ -364,7 +364,6 @@ $(document).ready(function() {
 			dataType: "text", //format for the response
 			processData: false,
 			success: function () {
-				console.log('Shift successfully added');
 				$('#calendar').fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 		    	$('td.unsaved').removeClass('unsaved');
@@ -381,7 +380,6 @@ $(document).ready(function() {
 			method: 'DELETE',
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('Shift #' + shiftId + ' successfully deleted');
 				$('#calendar').fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 			},
@@ -399,7 +397,6 @@ $(document).ready(function() {
 			processData: false,
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('Shift #' + shiftId + ' successfully updated');
 				$('#calendar').fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 			},
@@ -417,7 +414,6 @@ $(document).ready(function() {
 				processData: false,
 				dataType: "text", //format for the response
 				success: function () {
-					console.log('Multi shifts successfully updated');
 					$('#calendar').fullCalendar('refetchEvents');
 					$('#calendar').removeClass('unsaved');
 					$('.form').addClass('hidden');
@@ -433,7 +429,6 @@ $(document).ready(function() {
 			method: 'GET',
 			dataType: "text", //format for the response
 			success: function () {
-				console.log('Shifts successfully retrieved');
 			},
 			error: function(jqxhr, textStatus, err) {
 				SimpleShifts.api.throwErr(jqxhr, textStatus, err);
@@ -507,31 +502,40 @@ $(document).ready(function() {
 	$('#filterSubmit').click(function(){
 		var filterName = $('#filterByDoc option:selected').text();
 		filterName = filterName.toLowerCase().replace(' ','-');
-		console.log('filterName: ' + filterName);
 		$('.fc-event-container').addClass('invisible');
 		$( '.' +  filterName).parent().removeClass('invisible');
 		$('.form').addClass('hidden');
 	});
 	$('#profile-email-update-submit').click(function(){
-		var payload = {
-			"updateType":"email",
-			"local" : {
-				"email" : $('#profile-email-form input').val(),
-				"password" : $('#profile-pwd-form input').val()
-			}
+        if (!validate( $('#profile-email-form input').val(), 'email' )) {
+            showClientSideErr('invalid email');
+        } else {
+            hideClientSideErr();
+            var payload = {
+                "updateType": "email",
+                "local": {
+                    "email": $('#profile-email-form input').val(),
+                    "password": $('#profile-pwd-form input').val()
+                }
 
-		};
-		SimpleShifts.api.user.update(payload);
+            };
+            SimpleShifts.api.user.update(payload);
+        }
 	});
 	$('#profile-pwd-update-submit').click(function(){
-		var payload = {
-			"updateType":"pwd",
-			"local" : {
-				"email" : $('#profile-email-form input').val(),
-				"password" : $('#profile-pwd-form input').val()
-			}
-		};
-		SimpleShifts.api.user.update(payload);
+		if ( !validate( $('#profile-pwd-form input').val() ) ) {
+			showClientSideErr('invalid password')
+		} else {
+			hideClientSideErr();
+			var payload = {
+				"updateType":"pwd",
+				"local" : {
+					"email" : $('#profile-email-form input').val(),
+					"password" : $('#profile-pwd-form input').val()
+				}
+			};
+			SimpleShifts.api.user.update(payload);
+		}
 	});	
 	$('#announcementsSubmit').click(function(){
 		var newContent = escape($('#announcements-input').val());

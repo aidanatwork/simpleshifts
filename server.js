@@ -15,8 +15,7 @@ var crypto       = require('crypto');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
-var session      = require('express-session'); 
-//var configDB     = require('./config/database');
+var session      = require('express-session');
 var noCache      = require('nocache');
 var path         = require('path');
 var ejs          = require('ejs');
@@ -39,8 +38,7 @@ var options = {
 
 // mongoose instance connection
 mongoose.Promise = global.Promise;
-mongoose.connect(instance.database);
-//mongoose.connect(configDB.database); //connect to our database
+mongoose.connect(instance.database); //connect to our database
 
 require('./config/passport')(passport);
 
@@ -87,9 +85,5 @@ var routes = require('./api/routes/routes'); //importing routes
 routes(app, passport); //register the routes
 
 //launch
-//TODO - add functionality for redirecting http requests to https
-//app.listen(port);
-//http.createServer(app).listen(port);
 https.createServer(options, app).listen(sslport);
-//console.log('SimpleShifts calendar server started on: ' + port);
 console.log('SimpleShifts v' + module.exports.version + ' SSL server started on: ' + sslport);

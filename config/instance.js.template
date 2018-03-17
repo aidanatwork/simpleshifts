@@ -1,0 +1,27 @@
+var dbuser     = '', //replace with your mongodb username
+    dbpassword = '', //replace with your mongodb password
+    dburi      = '', //replace with your mongodb uri
+    domain     = ''; //replace with the domain you wish to use for your instance
+
+module.exports = {
+    /* info specific to this instance of SimpleShifts */
+    'database':'mongodb://' + dbuser + ':' + dbpassword + '@' + dburi,
+    //replace with the email alias you wish to use for server emails
+    'emailservice':{
+        service: '',
+        user: '',
+        pass: '',
+        fromname: '' //displayed from email for pwd communications
+    },
+    'options': {
+        'key' : '', //replace with the location of your SSL key
+        'cert': '', //replace with the location of your SSL cert
+	'ca':'' //replace with your cert. authority
+    },
+    //replace with the custom domain name for your instance
+    'origin': '',
+    //replace with your secret key
+    'secret':'',
+    //replace with the name of the organization using this instance
+    'title':''
+};

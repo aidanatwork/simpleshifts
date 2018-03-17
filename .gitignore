@@ -62,3 +62,6 @@ typings/
 
 #IDE
 .idea
+
+#SimpleShifts instance.js file
+/config/instance.js

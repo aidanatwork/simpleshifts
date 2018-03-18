@@ -484,7 +484,7 @@ $(document).ready(function() {
 	    eventSources: SimpleShifts.events,
 	    footer: {
 	    	left:'',
-	    	center: 'mngEmp,filter',
+	    	center: '',
 	    	right:'cancelSave, saveChgs'
 	    },
 	    header: {

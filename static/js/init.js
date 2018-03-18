@@ -25,6 +25,9 @@ $(document).ready(function() {
         $('#clientside-error').addClass('hidden');
         $('#clientside-error').text('Error');
 	};
+    var hideMessages = function() {
+    	$('.alert').addClass('hidden');
+	};
 	var batchEditCancel = function() {
 		$('#calendar').fullCalendar('refetchEvents');
 		SimpleShifts.updatesHopper = [];
@@ -508,9 +511,11 @@ $(document).ready(function() {
 	});
 	$('#profile-email-update-submit').click(function(){
         if (!validate( $('#profile-email-form input').val(), 'email' )) {
+        	hideMessages()
             showClientSideErr('invalid email');
         } else {
-            hideClientSideErr();
+            //hideClientSideErr();
+			hideMessages()
             var payload = {
                 "updateType": "email",
                 "local": {
@@ -524,9 +529,11 @@ $(document).ready(function() {
 	});
 	$('#profile-pwd-update-submit').click(function(){
 		if ( !validate( $('#profile-pwd-form input').val() ) ) {
+			hideMessages()
 			showClientSideErr('invalid password')
 		} else {
-			hideClientSideErr();
+			//hideClientSideErr();
+			hideMessages()
 			var payload = {
 				"updateType":"pwd",
 				"local" : {

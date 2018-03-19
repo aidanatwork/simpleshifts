@@ -7,6 +7,7 @@ const async      = require('async'),
       moment     = require('moment'),
       mongoose   = require('mongoose'),
       nodemailer = require('nodemailer'),
+      Content    = mongoose.model('Content'),
       User       = mongoose.model('User');
 
 //utility functions
@@ -44,13 +45,15 @@ module.exports = function(app, passport) {
       });
   });
   app.get('/reset/:token', function(req, res) {
-    console.log('Token on GET reset: ' + req.params.token);
     User.findOne({
-        resetPasswordToken: req.params.token/*,
-        resetPasswordExpires: { $gt: Date.now() }*/
+        'local.resetPasswordToken' : req.params.token,
+        'local.resetPasswordExpires' : { $gt: Date.now() }
     }, function(err, user){
+      if (err) {
+          console.log('Err on reset:token GET: ' + err);
+      }
       if (!user) {
-        console.log('Err1: ' + err);
+        console.log('Tried reset but user not found');
         res.render('reset.ejs', {
             title: instance.title,
             moment: moment,
@@ -60,7 +63,7 @@ module.exports = function(app, passport) {
             user: false
         });
       } else {
-        console.log('Token is valid.');
+        console.log('Token is valid');
         res.render('reset.ejs', {
             title: instance.title,
             moment: moment,
@@ -99,8 +102,8 @@ module.exports = function(app, passport) {
                 title: instance.title, moment: moment, message: 'User not found', success:'', user: false
               });
             }
-            user.resetPasswordToken = token;
-            user.resetPasswordExpires = Date.now() + 3600000 //expires in 1 hour
+            user.local.resetPasswordToken = token;
+            user.local.resetPasswordExpires = Date.now() + 3600000 //expires in 1 hour
 
             user.save(function (err) {
               done(err, token, user);
@@ -156,10 +159,11 @@ module.exports = function(app, passport) {
     async.waterfall([
       function(done) {
         User.findOne({
-          resetPasswordToken: req.params.token,
-          resetPasswordExpires: {$gt: Date.now()}
+          'local.resetPasswordToken' : req.params.token,
+          'local.resetPasswordExpires' : {$gt: Date.now()}
         }, function (err, user) {
           if (!user) {
+              console.log('Trying to POST to reset/:token but user not found');
               res.render('reset.ejs', {
                   title: instance.title,
                   moment: moment,
@@ -169,11 +173,14 @@ module.exports = function(app, passport) {
                   user: false
               });
           }
-          user.local.password = req.body.password;
-          user.resetPasswordToken = undefined;
-          user.resetPasswordExpires = undefined;
+          user.local.password = user.generateHash(req.body.password);
+          user.local.resetPasswordToken = undefined;
+          user.local.resetPasswordExpires = undefined;
 
           user.save(function (err) {
+            if (err) {
+                console.log('err on reset save: ' + err);
+            }
             req.logIn(user, function(err){
               done(err, user);
             });
@@ -205,8 +212,14 @@ module.exports = function(app, passport) {
                 });
             }
             console.log('Msg sent successfully');
-            res.render('index.ejs', {
-                title: instance.title, moment: moment, message:'', success: 'Success! Your password has been changed.', user: req.user
+            Content.findOne({ name: 'hp' }, function(err, field) {
+                if (err) {
+                    console.log('Error retrieving content: ' + err);
+                    res.render('index.ejs', { title: instance.title, moment: moment, message: '', success:'', content: '', user: req.user});
+                } else {
+                    field.html = unescape(field.html);
+                    res.render('index.ejs', { title: instance.title, moment: moment, message: '', success:'Success! Your password has been changed.', content: field, user: req.user});
+                }
             });
         });
       }
@@ -252,12 +265,14 @@ module.exports = function(app, passport) {
       if (err) { 
         return next(err); 
       }
-      if (!user) { 
+      if (!user) {
+        console.log('signup user not found');
         return res.render( 'signup.ejs', {
           title: instance.title, moment: moment, message: info.message || 'user already taken', user: false
         })
       }
       req.logIn(user, function(err) {
+        console.log('signup logging in');
         if (err) { return next(err); }
         return res.render( 'profile.ejs', {
           title: instance.title, moment: moment, content: '', message: '', success: 'success! new user created',  user: req.user

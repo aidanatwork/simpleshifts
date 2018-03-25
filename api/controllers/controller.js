@@ -39,7 +39,15 @@ exports.check_api = function(req, res) {
 };
 //serving site pages
 exports.get_index = function(req, res) {
-  Content.findOne({ name: 'hp' }, function(err, field) {
+/* TO DO - figure out if history is being saved and how to access it
+    var history = Content.historyModel();
+    console.log('Content model history: '  + Content.historyModel());
+    var collection = history.db.collections.contentDB_history.collection;
+    for (var key in collection) {
+      console.log('collection[' + key + ']: ' + collection[key]);
+    }
+*/
+    Content.findOne({ name: 'hp' }, function(err, field) {
     if (err) {
       console.log('Error retrieving content: ' + err);
       res.render('index.ejs', { title: instance.title, moment: moment, message: '', content: '', user: req.user});

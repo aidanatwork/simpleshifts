@@ -1,6 +1,6 @@
 {
   "name": "simpleshifts",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.4",
   "description": "A simple call-scheduling calendar for physician offices",
   "main": "server.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "method-override": "^2.3.10",
     "moment": "^2.20.1",
     "mongoose": "^5.0.3",
+    "mongoose-history": "^0.6.0",
     "morgan": "^1.9.0",
     "nocache": "^2.0.0",
     "nodemailer": "^4.6.2",

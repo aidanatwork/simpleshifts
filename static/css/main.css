@@ -16,6 +16,11 @@
 	text-decoration: none;
 }
 
+#topbar #beta {
+	color:red;
+	/*display:none;*/
+}
+
 .hidden {
 	display: none;
 }
@@ -115,7 +120,6 @@ div.fc-button-group {
 	background-color: #42f4a7;
 }
 
-
 #login-wrapper input[name="email"], #signup-wrapper input[name="email"] {
 	margin-left: 27px;
 }
@@ -129,6 +133,16 @@ div.fc-button-group {
 	font-size: 0.75em;
 	width: 16em;
 }
+.fc-list-view .UC span.fc-event-dot {
+	background-color: blue;
+}
+.fc-list-view .Call .fc-event-dot {
+	background-color: red;
+}
+.fc-list-view .Vacation .fc-event-dot {
+	background-color: gray;
+}
+
 @media all and (max-width : 480px) {
 	.fc-center, .fc-center .fc-button-group {
 		margin-top: 0.5em;

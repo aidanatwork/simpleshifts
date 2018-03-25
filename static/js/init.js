@@ -9,7 +9,34 @@ $(document).ready(function() {
 	};
 	var protocol = location.protocol;
 	var baseURL = location.hostname;
+	//cache DOM elements
+	var calendarElem = $('#calendar');
 	// utility funtions
+	var hideAllShifts = function() {
+        var currentView = calendarElem.fullCalendar('getView').name;
+        if (currentView.indexOf('list') === -1) {
+            $('.fc-event-container').addClass('invisible');
+		} else {
+			$('.fc-list-item').addClass('hidden');
+		}
+	};
+	var showShifts = function () {
+        hideAllShifts()
+        var currentView = calendarElem.fullCalendar('getView').name;
+        if (currentView.indexOf('list') === -1) {//for cal view
+            if (SimpleShifts.filteredEmp !== "none") { //show only shifts for filtered emp
+                $( '.' +  SimpleShifts.filteredEmp).parent().removeClass('invisible');
+            } else { //show for all emps
+                $('.fc-event-container').removeClass('invisible');
+            }
+		} else {//for list view
+            if (SimpleShifts.filteredEmp !== "none") {
+                $( '.' +  SimpleShifts.filteredEmp).removeClass('hidden');
+			} else {
+				$('.fc-list-item').removeClass('hidden');
+			}
+		}
+	};
     var validate = function(entry, type){
         if (type && type === 'email') {
             var reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -29,9 +56,9 @@ $(document).ready(function() {
     	$('.alert').addClass('hidden');
 	};
 	var batchEditCancel = function() {
-		$('#calendar').fullCalendar('refetchEvents');
+        calendarElem.fullCalendar('refetchEvents');
 		SimpleShifts.updatesHopper = [];
-		$('#calendar').removeClass('unsaved');
+		calendarElem.removeClass('unsaved');
 	};
 	var momentToString = function(myMoment) {
 		return myMoment.format().split('T')[0];	
@@ -75,9 +102,9 @@ $(document).ready(function() {
 	//activate admin functions
 	var activateAdminMode = function () {
 		//activate editable
-		$('#calendar').fullCalendar('option','editable','true');
+		calendarElem.fullCalendar('option','editable','true');
 		//activate dayClick
-		$('#calendar').fullCalendar('option','dayClick', 
+		calendarElem.fullCalendar('option','dayClick',
 			function(date){
 		    	$('td.unsaved').removeClass('unsaved');
 		    	if (SimpleShifts.selectedEvent !== "none") {
@@ -92,7 +119,7 @@ $(document).ready(function() {
 			}
 		);
 		//activate eventClick
-		$('#calendar').fullCalendar('option', 'eventClick', function(calEvent, jsEvent, view) {
+		calendarElem.fullCalendar('option', 'eventClick', function(calEvent, jsEvent, view) {
 			var classList = $(this).attr('class').split(/\s+/);
 
 	    	if (SimpleShifts.selectedEvent !== "none") {
@@ -107,7 +134,7 @@ $(document).ready(function() {
 			$('#edit-shift-form').removeClass('hidden');
 	    });
 	    //activate eventDrop
-	    $('#calendar').fullCalendar('option', 'eventDrop', function (event) {
+	    calendarElem.fullCalendar('option', 'eventDrop', function (event) {
 	    	$('.form').addClass('hidden');
 	    	$('#batch-edit-form').removeClass('hidden');
 	    	delete event["source"];
@@ -125,7 +152,7 @@ $(document).ready(function() {
 
 	        	}
 	        }
-	        $('#calendar').addClass('unsaved');
+	        calendarElem.addClass('unsaved');
 	    });
 		//activate admin listeners
 		$('#add-shift-submit').click(function(){
@@ -228,6 +255,7 @@ $(document).ready(function() {
 	//init and retrieve data for the calendar
 	SimpleShifts.selectedEvent = "none";
 	SimpleShifts.selectedDay = "none";
+	SimpleShifts.filteredEmp = "none";
 	SimpleShifts.updatesHopper = [];
 	SimpleShifts.empData = [];
 	//properties for each shift data object
@@ -314,7 +342,7 @@ $(document).ready(function() {
 			success: function () {
 				SimpleShifts.api.employees.getAll();
 				populateEmpLists();
-				$('#calendar').fullCalendar('refetchEvents');
+                calendarElem.fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 			},
 			error: function(jqxhr, textStatus, err) {
@@ -333,7 +361,7 @@ $(document).ready(function() {
 			success: function () {
 				SimpleShifts.api.employees.getAll();
 				populateEmpLists();
-				$('#calendar').fullCalendar('refetchEvents');
+                calendarElem.fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 		    	$('#edit-emp-wrapper').addClass('hidden');
 				$('#mng-emp-wrapper').removeClass('hidden');	
@@ -367,7 +395,7 @@ $(document).ready(function() {
 			dataType: "text", //format for the response
 			processData: false,
 			success: function () {
-				$('#calendar').fullCalendar('refetchEvents');
+                calendarElem.fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 		    	$('td.unsaved').removeClass('unsaved');
 		    	SimpleShifts.selectedDay = "none";
@@ -383,7 +411,7 @@ $(document).ready(function() {
 			method: 'DELETE',
 			dataType: "text", //format for the response
 			success: function () {
-				$('#calendar').fullCalendar('refetchEvents');
+                calendarElem.fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 			},
 			error: function(jqxhr, textStatus, err) {
@@ -400,7 +428,7 @@ $(document).ready(function() {
 			processData: false,
 			dataType: "text", //format for the response
 			success: function () {
-				$('#calendar').fullCalendar('refetchEvents');
+                calendarElem.fullCalendar('refetchEvents');
 		    	$('.form').addClass('hidden');
 			},
 			error: function(jqxhr, textStatus, err) {
@@ -417,8 +445,8 @@ $(document).ready(function() {
 				processData: false,
 				dataType: "text", //format for the response
 				success: function () {
-					$('#calendar').fullCalendar('refetchEvents');
-					$('#calendar').removeClass('unsaved');
+                    calendarElem.fullCalendar('refetchEvents');
+					calendarElem.removeClass('unsaved');
 					$('.form').addClass('hidden');
 				},
 				error: function(jqxhr, textStatus, err) {
@@ -455,9 +483,27 @@ $(document).ready(function() {
 	//END - Shift ajax functions
 
 	//initialize the calendar...
-	$('#calendar').fullCalendar({
+	calendarElem.fullCalendar({
 	    // put your options and callbacks header
+		views: {
+			listMonth: {
+				type: 'list',
+				duration: { months: 1}
+			}
+		},
 	    customButtons: {
+	    	chgView: { //TODO - change this to two buttons, 'list' and 'cal'. Or icons.
+	    		text: 'view',
+				click: function () {
+	    			var currentView = calendarElem.fullCalendar('getView').name;
+	    			if (currentView.indexOf('list') === -1) { //in calendar view
+                        calendarElem.fullCalendar('changeView', 'listMonth');
+					} else { //in list view
+                        calendarElem.fullCalendar('changeView', 'month');
+					}
+
+				}
+			},
 	    	mngEmp: {
 	    		text: 'emp',
 	    		click: function () {
@@ -480,7 +526,10 @@ $(document).ready(function() {
 	    editable: false,
 	    eventRender: function(event, element) {
 	    	element.attr("id",event._id);
-	    },		        
+	    },
+		eventAfterAllRender: function () {
+			showShifts();
+		},
 	    eventSources: SimpleShifts.events,
 	    footer: {
 	    	left:'',
@@ -489,7 +538,7 @@ $(document).ready(function() {
 	    },
 	    header: {
 	    	left: 'title',
-	    	center: 'mngEmp,filter',
+	    	center: 'mngEmp,filter,chgView',
 	    	right: 'today prev,next'
 	    }
 	});
@@ -499,14 +548,17 @@ $(document).ready(function() {
 	}
 	//event listeners
 	$('#showAllDocs').click(function(){
-		$('.fc-event-container').removeClass('invisible');
+		SimpleShifts.filteredEmp = "none";
+		showShifts();
+		//$('.fc-event-container').removeClass('invisible');
 		$('.form').addClass('hidden');	
 	});
 	$('#filterSubmit').click(function(){
 		var filterName = $('#filterByDoc option:selected').text();
 		filterName = filterName.toLowerCase().replace(' ','-');
-		$('.fc-event-container').addClass('invisible');
-		$( '.' +  filterName).parent().removeClass('invisible');
+		hideAllShifts();
+		SimpleShifts.filteredEmp = filterName;
+		showShifts();
 		$('.form').addClass('hidden');
 	});
 	$('#profile-email-update-submit').click(function(){

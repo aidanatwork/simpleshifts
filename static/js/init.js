@@ -109,7 +109,6 @@ $(document).ready(function() {
             empData[i].lname = empData[i].name.split(' ')[1];
         }
         empData = sortArrObj(empData,'lname');
-        console.table(empData)
         //TODO - abstract dropdown population into a generic util function
         for (var i = 0; i<empData.length; i++) {
             options.push('<option value="',

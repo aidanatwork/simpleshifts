@@ -12,6 +12,19 @@ $(document).ready(function() {
 	//cache DOM elements
 	var calendarElem = $('#calendar');
 	// utility funtions
+    var sortArrObj = function(inputArray, property) {
+        var newObjArr = inputArray.sort(function(a,b){
+            var nameA = a[property].toLowerCase(), nameB=b[property].toLowerCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0
+        });
+        return newObjArr;
+    };
 	var hideAllShifts = function() {
         var currentView = calendarElem.fullCalendar('getView').name;
         if (currentView.indexOf('list') === -1) {
@@ -84,21 +97,30 @@ $(document).ready(function() {
 		      		
 		}
 	};
-	var populateEmpLists = function () {
-	    //populate employee list option elements
-	    var empListElems = $('.empList');
-	    var options = [];
-	    //TODO - abstract dropdown population into a generic util function
-		for (var i = 0; i<SimpleShifts.empData.length; i++) {
-			options.push('<option value="', 
-				SimpleShifts.empData[i].id,
-				'">',
-				SimpleShifts.empData[i].name,
-				'</option>'
-			);
-		}	
-		empListElems.html(options.join('')); 
-	};
+    var populateEmpLists = function () {
+        //populate employee list option elements
+        var empListElems = $('.empList');
+        var options = [];
+        var empData = SimpleShifts.empData;
+        //TODO - change storage of name in empModel.js to use 'fname' and 'lname', make 'name' a virtual
+        //     - the solution below is a temporary fix and can't handle names with spaces in them
+        for (var i=0;i<empData.length;i++) {
+            empData[i].fname = empData[i].name.split(' ')[0];
+            empData[i].lname = empData[i].name.split(' ')[1];
+        }
+        empData = sortArrObj(empData,'lname');
+        console.table(empData)
+        //TODO - abstract dropdown population into a generic util function
+        for (var i = 0; i<empData.length; i++) {
+            options.push('<option value="',
+                empData[i].id,
+                '">',
+                empData[i].name,
+                '</option>'
+            );
+        }
+        empListElems.html(options.join(''));
+    };
 	//activate admin functions
 	var activateAdminMode = function () {
 		//activate editable
@@ -486,18 +508,18 @@ $(document).ready(function() {
 	calendarElem.fullCalendar({
 	    // put your options and callbacks header
 		views: {
-			listMonth: {
+			listYear: {
 				type: 'list',
-				duration: { months: 1}
+				duration: { months: 12}
 			}
 		},
 	    customButtons: {
-	    	chgView: { //TODO - change this to two buttons, 'list' and 'cal'. Or icons.
+	    	chgView: {
 	    		text: 'view',
 				click: function () {
 	    			var currentView = calendarElem.fullCalendar('getView').name;
 	    			if (currentView.indexOf('list') === -1) { //in calendar view
-                        calendarElem.fullCalendar('changeView', 'listMonth');
+                        calendarElem.fullCalendar('changeView', 'listYear');
 					} else { //in list view
                         calendarElem.fullCalendar('changeView', 'month');
 					}

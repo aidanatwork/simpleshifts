@@ -485,6 +485,7 @@ $(document).ready(function() {
 	//initialize the calendar...
 	calendarElem.fullCalendar({
 	    // put your options and callbacks header
+		eventOrder: "shiftType",
 		views: {
 			listMonth: {
 				type: 'list',

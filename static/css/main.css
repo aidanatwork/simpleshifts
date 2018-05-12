@@ -16,11 +16,6 @@
 	text-decoration: none;
 }
 
-#topbar #beta {
-	color:red;
-	/*display:none;*/
-}
-
 .hidden {
 	display: none;
 }

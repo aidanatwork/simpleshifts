@@ -1,7 +1,7 @@
+// api/models/empModel.js
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Shift = require('./shiftModel');
 
 var EmployeeSchema = new Schema ({
 	name: { //this is the name of the dr associated with this employee record

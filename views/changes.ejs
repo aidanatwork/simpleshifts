@@ -1,0 +1,41 @@
+<!-- views/profile.ejs -->
+<% include partials/head %>
+<% include partials/header %>
+<body>
+<div class="container">
+    <% include partials/title %>
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Changes</h1>
+        <% include partials/client-side-error.ejs%>
+        <!-- show any messages that come back with authentication -->
+        <% if (message) { %>
+        <div class="alert alert-danger">
+            <%= message %>
+        </div>
+        <% } %>
+        <% if (success) { %>
+        <div class="alert alert-success">
+            <%= success %>
+        </div>
+        <% } %>
+        <div id="client-side-messages">
+            <div class="alert alert-danger hidden"></div>
+            <div class="alert alert-success hidden"></div>
+        </div>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+</div>
+<div class="row">
+    <!-- LOCAL INFORMATION -->
+    <div class="col-sm-6">
+        <div class="well">
+            <h3><span class="fa fa-user"></span>Latest Changes to Shifts</h3>
+            <div id="changes-output-container">
+                Changes should appear here.
+            </div>
+        </div>
+    </div>
+</div>
+<% include partials/footer %>
+</body>
+</html>

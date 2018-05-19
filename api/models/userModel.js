@@ -1,4 +1,4 @@
-// api/models/user.js
+// api/models/userModel.js
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

@@ -1,7 +1,7 @@
+// api/models/shiftModel.js
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Employee = require('./empModel');
 
 var ShiftSchema = new Schema({
 	employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employees'},
@@ -10,8 +10,13 @@ var ShiftSchema = new Schema({
 		enum: ['UC','Call','Vacation'],
 		default: 'UC'
 	}, 
-	start: Date
+	start: Date/*,
+	createdBy: String,
+	createdAt: Date*/
 });
+
+var diffHistory = require("mongoose-diff-history/diffHistory").plugin;
+ShiftSchema.plugin(diffHistory, { omit: ['end'] });
 
 ShiftSchema.virtual('id').get(function(){
     return this._id.toHexString();

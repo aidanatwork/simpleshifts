@@ -12,7 +12,7 @@ $(document).ready(function() {
 	//cache DOM elements
 	var calendarElem = $('#calendar');
 	// utility funtions
-    var sortArrObj = function(inputArray, property) {
+	var sortArrObj = function(inputArray, property) {
         var newObjArr = inputArray.sort(function(a,b){
             var nameA = a[property].toLowerCase(), nameB=b[property].toLowerCase();
             if (nameA < nameB) {
@@ -24,7 +24,7 @@ $(document).ready(function() {
             return 0
         });
         return newObjArr;
-    };
+	};
 	var hideAllShifts = function() {
         var currentView = calendarElem.fullCalendar('getView').name;
         if (currentView.indexOf('list') === -1) {
@@ -74,7 +74,7 @@ $(document).ready(function() {
 		calendarElem.removeClass('unsaved');
 	};
 	var momentToString = function(myMoment) {
-		return myMoment.format().split('T')[0];	
+		return myMoment.format().split('T')[0];
 	};
 	var getEmpIdByName = function(name, obj) {
 		for (var i = 0;i<obj.length;i++) {
@@ -97,29 +97,29 @@ $(document).ready(function() {
 		      		
 		}
 	};
-    var populateEmpLists = function () {
-        //populate employee list option elements
-        var empListElems = $('.empList');
-        var options = [];
-        var empData = SimpleShifts.empData;
-        //TODO - change storage of name in empModel.js to use 'fname' and 'lname', make 'name' a virtual
-        //     - the solution below is a temporary fix and can't handle names with spaces in them
-        for (var i=0;i<empData.length;i++) {
-            empData[i].fname = empData[i].name.split(' ')[0];
-            empData[i].lname = empData[i].name.split(' ')[1];
-        }
-        empData = sortArrObj(empData,'lname');
+	var populateEmpLists = function () {
+	    //populate employee list option elements
+	    var empListElems = $('.empList');
+	    var options = [];
+	    var empData = SimpleShifts.empData;
+	    //TODO - change storage of name in empModel.js to use 'fname' and 'lname', make 'name' a virtual
+		//	   - the solution below is a temporary fix and can't handle names with spaces in them
+	    for (var i=0;i<empData.length;i++) {
+	    	empData[i].fname = empData[i].name.split(' ')[0];
+	    	empData[i].lname = empData[i].name.split(' ')[1];
+		}
+		empData = sortArrObj(empData,'lname');
         //TODO - abstract dropdown population into a generic util function
-        for (var i = 0; i<empData.length; i++) {
-            options.push('<option value="',
-                empData[i].id,
-                '">',
-                empData[i].name,
-                '</option>'
-            );
-        }
-        empListElems.html(options.join(''));
-    };
+		for (var i = 0; i<empData.length; i++) {
+			options.push('<option value="', 
+				empData[i].id,
+				'">',
+				empData[i].name,
+				'</option>'
+			);
+		}	
+		empListElems.html(options.join('')); 
+	};
 	//activate admin functions
 	var activateAdminMode = function () {
 		//activate editable
@@ -213,6 +213,7 @@ $(document).ready(function() {
 			var title = $('#ed-shiftEmp option:selected').text();
 			var empId = $('#ed-shiftEmp').val();
 			var start = $('#ed-shiftDate').val();
+			start += 'T00:00:00.000Z';
 			var end = start;
 			var classArr = [title.toLowerCase().replace(/ /g,'-'),$('#ed-shiftType').val()];
 			var updateShiftData = {
@@ -507,6 +508,7 @@ $(document).ready(function() {
 	calendarElem.fullCalendar({
 	    // put your options and callbacks header
 		eventOrder: 'shiftType',
+		allDayDefault: true,
 		views: {
 			listYear: {
 				type: 'list',

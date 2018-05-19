@@ -1,21 +1,12 @@
-// api/models/content.js
+// api/models/contentModel.js
 'use strict';
 var mongoose = require('mongoose');
-var history = require('mongoose-history');
 var Schema = mongoose.Schema;
 
 var ContentSchema = new Schema({
 	name: String,
 	html: String
 });
-
-//generate changelog
-/*var options = {
-    metadata: [
-        {key:'user', value: }
-    ]
-};*/
-ContentSchema.plugin(history);
 
 // Duplicate the ID field.
 ContentSchema.virtual('id').get(function(){

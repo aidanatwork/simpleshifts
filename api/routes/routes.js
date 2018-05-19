@@ -22,10 +22,12 @@ const isLoggedIn = function(req, res, next) {
 module.exports = function(app, passport) {
   const calCtrl = require('../controllers/controller');
     // Initializing route groups
-  const shiftRoutes   = express.Router(),
-        empRoutes     = express.Router(),
-        contentRoutes = express.Router(),
-        userRoutes    = express.Router();
+  const shiftRoutes     = express.Router(),
+        shiftHistRoutes = express.Router(),
+        empRoutes       = express.Router(),
+        contentRoutes   = express.Router(),
+        userRoutes      = express.Router(),
+        changesRoutes   = express.Router();
 
   //=========================
   // Page Routes
@@ -44,6 +46,7 @@ module.exports = function(app, passport) {
           title: instance.title, moment: moment, message: '', success:'', user: req.user
       });
   });
+  //show reset password page
   app.get('/reset/:token', function(req, res) {
     User.findOne({
         'local.resetPasswordToken' : req.params.token,
@@ -75,6 +78,8 @@ module.exports = function(app, passport) {
       }
     });
   });
+  //show page with latest changes to shift data
+  app.get('/changes', isLoggedIn, calCtrl.get_changes);
 
   //=========================
   // Page Action Routes
@@ -287,13 +292,18 @@ module.exports = function(app, passport) {
 
   // Set url for API group routes
   app.use('/api/shifts', shiftRoutes);
+  app.use('/api/shiftHist', shiftHistRoutes);
   app.use('/api/employees', empRoutes);
   app.use('/api/content', contentRoutes);
   app.use('/api/user', userRoutes);
+  app.use('/api/changes', changesRoutes);
 
   // api healthcheck
   app.route('/api')
     .get(calCtrl.check_api);
+
+  //changes api routes
+    changesRoutes.get('/', isLoggedIn, calCtrl.list_all_changes);
 
   //user api routes
   userRoutes.post('/', isLoggedIn, calCtrl.update_a_user);
@@ -311,6 +321,9 @@ module.exports = function(app, passport) {
   .get(calCtrl.list_all_shifts)
   .post(calCtrl.create_a_shift);
 
+  //shift history api routes
+  shiftHistRoutes.route('/')
+  .get(calCtrl.read_history_for_shifts);
   //employee api routes
   empRoutes.route('/')
     .get(calCtrl.list_all_emps)
@@ -329,4 +342,7 @@ module.exports = function(app, passport) {
   contentRoutes.route('/')
     .get(calCtrl.list_all_content_fields)
     .post(calCtrl.create_a_content_field);
+
+  contentRoutes.route('/:fieldName/histories')
+      .get(calCtrl.read_history_for_content_field);
 };

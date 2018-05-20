@@ -41,11 +41,13 @@ exports.check_api = function(req, res) {
 exports.get_index = function(req, res) {
     Content.findOne({ name: 'hp' }, function(err, field) {
     if (err) {
-      console.log('Error retrieving content: ' + err);
-      res.render('index.ejs', { title: instance.title, moment: moment, message: '', content: '', user: req.user});
-    } else {
+        console.log('Error retrieving content: ' + err);
+        res.render('index.ejs', {title: instance.title, moment: moment, message: '', content: '', user: req.user});
+    } else if (field) {
       field.html = unescape(field.html);
       res.render('index.ejs', { title: instance.title, moment: moment, message: '', content: field, user: req.user});
+    } else {
+      res.render('index.ejs', { title: instance.title, moment: moment, message: '', content: '', user: req.user});
     }
   });
 };

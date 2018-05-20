@@ -19,7 +19,7 @@ module.exports = {
 	'ca':'' //replace with your cert. authority
     },
     //replace with the custom domain name for your instance
-    'origin': '',
+    'origin': 'https://' + domain,
     //replace with your secret key
     'secret':'',
     //replace with the name of the organization using this instance

@@ -303,7 +303,7 @@ module.exports = function(app, passport) {
     .get(calCtrl.check_api);
 
   //changes api routes
-    changesRoutes.get('/', isLoggedIn, calCtrl.list_all_changes);
+  changesRoutes.get('/', isLoggedIn, calCtrl.list_all_changes);
 
   //user api routes
   userRoutes.post('/', isLoggedIn, calCtrl.update_a_user);

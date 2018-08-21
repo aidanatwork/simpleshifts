@@ -11,7 +11,7 @@ $(document).ready(function() {
 	var baseURL = location.hostname;
 	//cache DOM elements
 	var calendarElem = $('#calendar');
-	// utility funtions
+	// utility functions
 	var sortArrObj = function(inputArray, property) {
         var newObjArr = inputArray.sort(function(a,b){
             var nameA = a[property].toLowerCase(), nameB=b[property].toLowerCase();
@@ -567,7 +567,7 @@ $(document).ready(function() {
 	    }
 	});
 	//fix mobile date pickers		    
-	if ( $('[type="date"]').prop('type') != 'date' ) {
+	if ( $('[type="date"]').length && $('[type="date"]').prop('type') != 'date' ) {
 	    $('[type="date"]').datepicker();
 	}
 	//event listeners

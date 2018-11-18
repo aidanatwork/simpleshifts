@@ -1,6 +1,6 @@
 {
   "name": "simpleshifts",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple call-scheduling calendar for physician offices",
   "main": "server.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "async": "^2.6.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.2",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
@@ -30,12 +30,14 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",
+    "fsevents": "^2.0.1",
     "fullcalendar": "^3.8.2",
     "http": "0.0.0",
     "https": "^1.0.0",
     "jquery": "^3.3.1",
     "jquery-datepicker": "^1.11.5",
     "jsondiffpatch": "^0.3.8",
+    "lodash": "^4.17.11",
     "lodash.pick": "^4.4.0",
     "method-override": "^2.3.10",
     "moment": "^2.20.1",

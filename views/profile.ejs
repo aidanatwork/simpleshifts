@@ -51,7 +51,7 @@
                 </div>
                 <h3>Change Announcements</h3>
                 <div id="announcements-form">  
-                    <textarea form="announcements-form" id="announcements-input" cols="40"><% if (content) { %><%= content.html %><% } %></textarea><br>
+                    <textarea form="announcements-form" id="announcements-input" cols="40"><%= content.html ? content.html : '' %></textarea><br>
                     <input id="announcementsSubmit" type="submit" />
                 </div>
             </div>

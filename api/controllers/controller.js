@@ -62,11 +62,28 @@ exports.get_signup = function(req, res) {
 exports.get_profile = function(req, res) {
   Content.findOne({ name: 'hp' }, function(err, field) {
     if (err) {
-      console.log('Error retrieving content: ' + err);
-      res.render('profile.ejs', { title: instance.title, moment: moment, message: '', success: '', content: '', user: req.user});
-    } else {
+        console.log('Error retrieving content: ' + err);
+        res.render('profile.ejs', {
+            title: instance.title,
+            moment: moment,
+            message: '',
+            success: '',
+            content: '',
+            user: req.user
+        });
+    } else if (field) {
       field.html = unescape(field.html);
       res.render('profile.ejs', { title: instance.title, moment: moment, message: '', success: '', content: field, user: req.user});
+    } else {
+        console.log('No content retrieved');
+        res.render('profile.ejs', {
+            title: instance.title,
+            moment: moment,
+            message: '',
+            success: '',
+            content: {"name":"hp","html":""},
+            user: req.user
+        });
     }
   });
 };

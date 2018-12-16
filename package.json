@@ -1,6 +1,6 @@
 {
   "name": "simpleshifts",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A simple call-scheduling calendar for physician offices",
   "main": "server.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "ejs": "^2.5.7",
+    "event-stream": "3.3.5",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",

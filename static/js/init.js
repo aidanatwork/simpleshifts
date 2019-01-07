@@ -97,6 +97,18 @@ $(document).ready(function() {
 		      		
 		}
 	};
+
+	var getShiftDayNight = function (classList) {
+        for (var i=0; i<classList.length; i++) {
+            if (classList[i] === 'day' || classList[i] === 'night' || classList[i] === 'unset') {
+                return classList[i];
+                break;
+            } else if (i === classList.length-1) {
+                return ('shiftDayNight not found');
+            }
+
+        }
+	};
 	var populateEmpLists = function () {
 	    //populate employee list option elements
 	    var empListElems = $('.empList');
@@ -149,7 +161,8 @@ $(document).ready(function() {
 	    	SimpleShifts.selectedEvent = calEvent;
 	    	$('#ed-shiftDate').val(momentToString(calEvent.start));	    
 	    	$('#ed-shiftEmp').val(getEmpIdByName(calEvent.title,SimpleShifts.empData));
-	    	$('#ed-shiftType').val( getShiftType(classList) );   
+	    	$('#ed-shiftType').val( getShiftType(classList) );
+            $('#ed-shiftTime').val( getShiftDayNight(classList) );
 	    	$(this).addClass('selected');
 			$('.form').addClass('hidden');
 			$('#edit-shift-form').removeClass('hidden');
@@ -221,8 +234,8 @@ $(document).ready(function() {
 			var start = $('#ed-shiftDate').val();
 			start += 'T00:00:00.000Z';
 			var end = start;
-            var dayNight = $('#ed-shiftTime option:selected').val();
-            var shiftType = $('#add-shiftType').val();
+            var dayNight = $('#ed-shiftTime').val();
+            var shiftType = $('#ed-shiftType').val();
 			var classArr = [
 				title.toLowerCase().replace(/ /g,'-'), //shift title
 				shiftType, //shift type

@@ -7,7 +7,8 @@ A simple call-scheduling calendar for physician offices. You'll need some experi
     - *6/1/2019:* Add screenshots to Setup Guide
     - *6/1/2019:* Accomodate switch from mLab to MongoDB (https://blog.mlab.com/2018/10/mlab-is-becoming-a-part-of-mongodb-inc/)
     - *6/1/2019:* Create a history page that logs what changes were made to DB (Create, Remove, Update, Delete) and by what user
-    - *6/1/2019:* Add distinguishing icons for day and night urgent care shifts, as well as shift types (including in printable view)
+    - *6/1/2019:* Add day and night icons for urgent care shifts
+    - *6/1/2019:* Add initial for shift type (U,C,V) to event title (both calendar and list view)
     - *12/31/2019:* Add unit tests, automated alerts when app is failing
     - *12/31/2019:* Containerize using Docker, Chef, Kubernetes, etc. for easier deployment of new instances
     - *6/1/2020:* Turn this into a self-service platform, so it doesn't need as much expertise to set up.

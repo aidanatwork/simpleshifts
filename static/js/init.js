@@ -167,10 +167,9 @@ $(document).ready(function() {
 	        		if (event.id === SimpleShifts.updatesHopper[i].id) {
 	        			SimpleShifts.updatesHopper[i] = event;
 	        			break;
-		        		} else if ( i == (SimpleShifts.updatesHopper.length-1) ) {
+					} else if ( i == (SimpleShifts.updatesHopper.length-1) ) {
 	 	       			SimpleShifts.updatesHopper.push(event);
-		        		}
-
+					}
 	        	}
 	        }
 	        calendarElem.addClass('unsaved');
@@ -181,12 +180,19 @@ $(document).ready(function() {
 			var title = $('#add-shiftEmp option:selected').text();
 			var start = $('#add-shiftDate').val();
 			var end = start;
-			var classArr = [title.toLowerCase().replace(/ /g,'-'),$('#add-shiftType').val()];
+            var shiftType = $('#add-shiftType').val();
+            var dayNight = $('#add-shiftTime option:selected').val();
+			var classArr = [
+				title.toLowerCase().replace(/ /g,'-'), //shift title
+				shiftType, //shift type
+				dayNight //shift day or night
+			];
 			var newShiftData = {
 			    "employee" : empId,
 			    "title": title,
 			    "start": start,
 			    "end": end,
+				"dayOrNight": dayNight,
 			    "className": classArr,
 			    "shiftType": classArr[1]
 			};
@@ -215,12 +221,19 @@ $(document).ready(function() {
 			var start = $('#ed-shiftDate').val();
 			start += 'T00:00:00.000Z';
 			var end = start;
-			var classArr = [title.toLowerCase().replace(/ /g,'-'),$('#ed-shiftType').val()];
+            var dayNight = $('#ed-shiftTime option:selected').val();
+            var shiftType = $('#add-shiftType').val();
+			var classArr = [
+				title.toLowerCase().replace(/ /g,'-'), //shift title
+				shiftType, //shift type
+                dayNight //shift day or night
+			];
 			var updateShiftData = {
 			    "employee" : empId,
 			    "title": title,
 			    "start": start,
 			    "end": end,
+                "dayOrNight": dayNight,
 			    "className": classArr,
 			    "shiftType": classArr[1]
 			};

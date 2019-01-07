@@ -9,8 +9,13 @@ var ShiftSchema = new Schema({
 		type: String,
 		enum: ['UC','Call','Vacation'],
 		default: 'UC'
-	}, 
-	start: Date/*,
+	},
+	start: Date,
+    dayOrNight: {
+        type: String,
+        enum: ['day','night','unset'],
+        default: 'unset'
+    }/*,
 	createdBy: String,
 	createdAt: Date*/
 });

@@ -30,7 +30,12 @@ var processShiftToSend = function(shift, name) {
   newShift.shiftType = shift.shiftType;
   newShift.start = shift.start;
   newShift.end = shift.end;
-  newShift.className = [newShift.title.toLowerCase().replace(/ /g,'-'), newShift.shiftType];
+  if (shift.dayOrNight) {
+    newShift.dayOrNight = shift.dayOrNight;
+  } else {
+    newShift.dayOrNight = 'unset';
+  };
+  newShift.className = [newShift.title.toLowerCase().replace(/ /g,'-'), newShift.shiftType, newShift.dayOrNight];
   return newShift; 
 };
 //API health check

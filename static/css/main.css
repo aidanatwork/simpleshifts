@@ -53,7 +53,29 @@
 .fc-event.Vacation, .fc-event-dot.Vacation {
 	background-color: gray;
 	border-color: gray;
-} 
+}
+
+/* START shift icons */
+.fc-event {
+	white-space: normal;
+	padding-right: 1.1em;
+}
+.fc-event .fc-content {
+	width: calc(100% - 1.1em);
+}
+.fc-event.day {
+	background-image: url(/static/img/dayicon.png);
+	background-size: 1.1em;
+}
+.fc-event.night {
+	background-image: url(/static/img/nighticon.png);
+	background-size: 0.9em;
+}
+.fc-event.day, .fc-event.night {
+	background-position: 98% 50%;
+	background-repeat: no-repeat;
+}
+/* END shift icons */
 
 .fc-event.selected, .fc-event.Call.selected,  .fc-event.UC.selected, .fc-event.Vacation.selected {
 	border: #f7c602 solid 3px;

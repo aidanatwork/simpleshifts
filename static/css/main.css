@@ -39,7 +39,11 @@
 .form p {
 	font-weight: bold;
 }
-
+.fc-event-dot {
+	border-radius: 4px;
+	height: 15px;
+	width: 15px;
+}
 .fc-event.UC, .fc-event-dot.UC {
 	background-color: blue;
 	border-color: blue;
@@ -155,14 +159,44 @@ div.fc-button-group {
 	font-size: 0.75em;
 	width: 16em;
 }
+.fc-list-view .fc-event-dot {
+	display: inline-block;
+}
 .fc-list-view .UC span.fc-event-dot {
 	background-color: blue;
+}
+.fc-list-view .UC span.fc-event-dot {
+	background-color: blue;
+}
+.fc-list-view .UC.day .fc-event-dot {
+	background: blue url(/static/img/dayicon.png);
+	background-size: 100% 100%
+}
+.fc-list-view .UC.night .fc-event-dot {
+	background: blue url(/static/img/nighticon.png);
+	background-size: 100% 100%
 }
 .fc-list-view .Call .fc-event-dot {
 	background-color: red;
 }
+.fc-list-view .Call .fc-event-dot::before {
+	content: "C";
+	color: #fff;
+	font-size: 0.8em;
+	position: relative;
+	left: 3px;
+	bottom: 4px;
+}
 .fc-list-view .Vacation .fc-event-dot {
 	background-color: gray;
+}
+.fc-list-view .Vacation .fc-event-dot::before {
+	content: "V";
+	color: #fff;
+	font-size: 0.8em;
+	position: relative;
+	left: 3px;
+	bottom: 4px;
 }
 
 @media all and (max-width : 480px) {

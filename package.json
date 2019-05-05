@@ -43,7 +43,7 @@
     "lodash.pick": "^4.4.0",
     "method-override": "^2.3.10",
     "moment": "^2.20.1",
-    "mongoose": "^5.0.3",
+    "mongoose": "^5.5.5",
     "mongoose-diff-history": "^1.5.2",
     "mongoose-history": "^0.6.0",
     "morgan": "^1.9.0",

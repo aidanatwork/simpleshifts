@@ -31,7 +31,8 @@ $(document).ready(function() {
             $('.fc-event-container').addClass('invisible');
 		} else {
 			$('.fc-list-item').addClass('hidden');
-		}
+            $('.fc-list-heading').addClass('hidden');
+        }
 	};
 	var showShifts = function () {
         hideAllShifts()
@@ -45,8 +46,14 @@ $(document).ready(function() {
 		} else {//for list view
             if (SimpleShifts.filteredEmp !== "none") {
                 $( '.' +  SimpleShifts.filteredEmp).removeClass('hidden');
+                $( '.' +  SimpleShifts.filteredEmp).each(
+					function(i,obj){
+                        $(this).prevAll('.fc-list-heading:first').removeClass('hidden')
+                    }
+				);
 			} else {
 				$('.fc-list-item').removeClass('hidden');
+                $('.fc-list-heading').removeClass('hidden');
 			}
 		}
 	};

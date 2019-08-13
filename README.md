@@ -11,7 +11,8 @@ A simple call-scheduling calendar for physician offices. You'll need some experi
     - *12/31/2019:* Containerize using Docker, Chef, Kubernetes, etc. for easier deployment of new instances
     - *6/1/2020:* Turn this into a self-service platform, so it doesn't need as much expertise to set up.
 
-    - ???: Create a user guide, introductory user videos, or LMS course
+    - ??/??/????: Create a user guide, introductory user videos, or LMS course
+    - ??/??/????: Refactor front-end code to use latest version of FullCalendar. 
     
 Are you a web developer or a technical writer interested in this project? Consider joining as a contributor! 
 Email me at contact@aidanwrites.com to find out more.

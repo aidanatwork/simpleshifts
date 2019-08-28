@@ -1,6 +1,6 @@
 {
   "name": "simpleshifts",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple call-scheduling calendar for physician offices",
   "main": "server.js",
   "scripts": {
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "async": "^2.6.0",
+    "base": "^3.0.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.2",
     "bson": "^4.0.0",

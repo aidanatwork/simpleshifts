@@ -38,7 +38,10 @@ var options = {
 
 // mongoose instance connection
 mongoose.Promise = global.Promise;
-mongoose.connect(instance.database); //connect to our database
+mongoose.connect(instance.database, {
+  useCreateIndex: true,
+  useNewUrlParser: true
+}); //connect to our database
 
 require('./config/passport')(passport);
 
@@ -74,8 +77,10 @@ app.set('view engine', 'ejs'); // set up ejs for templating
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 // required for passport
-app.use(session({ 
-  secret: instance.secret
+app.use(session({
+    secret: instance.secret,
+    resave: false,
+    saveUninitialized: false
 })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); //persistent login sessions

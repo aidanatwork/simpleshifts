@@ -1,0 +1,430 @@
+info:
+  title: SimpleShifts API
+  version: 1.0.7
+  contact:
+    email: contact@aidanwrites.com
+  description: 'With the SimpleShifts REST API, you can customize your front-end code to interact with the mLab databases for your instance. Services are available in the API for the **Shift**, **Employee**, **Content**, and **user** databases.'
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Update a user
+      consumes:
+        - application/json
+      produces:
+        - text/plain
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Object with updated user properties
+          required: true
+          schema:
+            $ref: '#/definitions/UserUpdate'
+      responses:
+        '200':
+          description: Successfully Updated
+          schema:
+            type: string
+            example: 'Credential update success!'
+        '400':
+          description: Bad Request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - no email in request
+                  - no pwd in request
+                example: no pwd in request
+        '500':
+          description: Server Error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                enum:
+                  - user not found
+                  - error saving new user
+                example: user not found
+  '/content/{fieldName}':
+    get:
+      tags:
+        - content
+      summary: Get one content field
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: fieldName
+          type: string
+          required: true
+          description: The short name identifying the content field
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Content'
+    put:
+      tags:
+        - content
+      summary: Update one content field
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: fieldName
+          type: string
+          required: true
+          description: The short name identifying the content field
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Content'
+  /content:
+    get:
+      tags:
+        - content
+      summary: Get all content fields
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Content'
+    post:
+      tags:
+        - content
+      summary: Create a content field
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Content object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Content'
+      responses:
+        '201':
+          description: Successfully added
+  '/employees/{employeeId}':
+    get:
+      tags:
+        - employees
+      summary: Get one employee
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: employeeId
+          type: string
+          required: true
+          description: The employee ID
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Employee'
+    put:
+      tags:
+        - employees
+      summary: Update one employee
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: employeeId
+          type: string
+          required: true
+          description: The employee ID
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Employee'
+    delete:
+      tags:
+        - employees
+      summary: Delete one employee
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: employeeId
+          type: string
+          required: true
+          description: The employee ID
+      responses:
+        '202':
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Emp successfully deleted
+  /employees:
+    get:
+      tags:
+        - employees
+      summary: Get all employees
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employee'
+    post:
+      tags:
+        - employees
+      summary: Create an employee
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Employee object that needs to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Employee'
+      responses:
+        '201':
+          description: Successfully added
+  /shifts/multi:
+    post:
+      tags:
+        - shifts
+      summary: Update multiple shifts as a batch
+      consumes:
+        - application/json
+      produces:
+        - text
+      parameters:
+        - in: body
+          name: body
+          description: Shift objects to be used to update shifts
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Shift'
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+            example: multi update completed
+  '/shifts/{shiftId}':
+    get:
+      tags:
+        - shifts
+      summary: Get one shift
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: shiftId
+          type: string
+          required: true
+          description: The shift ID
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Shift'
+    put:
+      tags:
+        - shifts
+      summary: Update one shift
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: shiftId
+          type: string
+          required: true
+          description: The shift ID
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Shift'
+    delete:
+      tags:
+        - shifts
+      summary: Delete one shift
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: shiftId
+          type: string
+          required: true
+          description: The shift ID
+      responses:
+        '202':
+          description: OK
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Shift successfully deleted
+  /shifts:
+    post:
+      tags:
+        - shifts
+      summary: Create a  shift
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Shift object that needs to be added to the schedule
+          required: true
+          schema:
+            $ref: '#/definitions/Shift'
+      responses:
+        '201':
+          description: Successfully added
+    get:
+      tags:
+        - shifts
+      summary: Get all shifts
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Shift'
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+definitions:
+  Shift:
+    type: object
+    required:
+      - className
+      - employee
+      - end
+      - shiftType
+      - start
+      - title
+    properties:
+      className:
+        type: array
+        items:
+          type: string
+        example:
+          - henry-blake
+          - UC
+      employee:
+        type: string
+        example: 5b01ca5d68516345ebdec840
+      end:
+        type: string
+        example: '2018-08-30'
+      shiftType:
+        type: string
+        example: UC
+      start:
+        type: string
+        example: '2018-08-30'
+      title:
+        type: string
+        example: Henry Blake
+    xml:
+      name: Shift
+  Employee:
+    type: object
+    xml:
+      name: Employee
+    x-examples:
+      example-1: {}
+    properties:
+      name:
+        type: string
+        example: Henry Blake
+  Content:
+    type: object
+    properties:
+      name:
+        type: string
+        example: hp
+      html:
+        type: string
+        example: '<b>Practice Announcements:</b><br>COLOR KEY<br>RED - On call<br>GREY - Vacation<br>BLUE - Urgent care'
+    required:
+      - name
+      - html
+    x-examples:
+      example-1: {}
+  UserUpdate:
+    type: object
+    required:
+      - updateType
+      - local
+    properties:
+      updateType:
+        type: string
+        enum:
+          - email
+          - pwd
+        example: email
+      local:
+        $ref: '#/definitions/local'
+  local:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        example: hpierce@gmail.com
+      password:
+        type: string
+        example: 'erf432f&*33'
+schemes:
+  - https
+tags:
+  - name: shifts
+    description: Operations for your shifts
+  - name: employees
+    description: Operations for your employees
+  - name: content
+    description: Operations for your content
+  - name: user
+    description: Operations about your users
+    externalDocs:
+      description: Find out more about SimpleShifts
+      url: 'http://simpleshifts.io'
+basePath: /api
+host: simpleshifts.io
+swagger: '2.0'

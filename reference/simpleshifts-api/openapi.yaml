@@ -50,6 +50,7 @@ paths:
                   - user not found
                   - error saving new user
                 example: user not found
+      description: Update details for a user of the instance.
   '/content/{fieldName}':
     get:
       tags:

@@ -170,8 +170,13 @@ exports.list_all_shifts = function(req, res) {
   exec(function(err, shiftSet){
     var returnObj = [];
     for (var i = 0; i < shiftSet.length; i++) {
-      var newShift = processShiftToSend(shiftSet[i], shiftSet[i].employee.name);
-      returnObj.push(newShift);
+      //if (!shiftSet[i].employee) {console.log('ERROR: i=' + i + ', shiftSet.length' + shiftSet.length + ', shiftSet[i]' + shiftSet[i]);}
+      if (!shiftSet[i].employee) {
+        console.log('ERROR! The employee for shift ' + shiftSet[i]._id + ' is null or undefined. See details here: \n' + shiftSet[i]);
+      } else {
+        var newShift = processShiftToSend(shiftSet[i], shiftSet[i].employee.name);
+        returnObj.push(newShift);
+      }
       if ( i === (shiftSet.length-1) ) {
         if (err) {
           res.send(err);

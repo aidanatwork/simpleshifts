@@ -7,7 +7,7 @@ var ShiftSchema = new Schema({
 	employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employees'},
 	shiftType: {
 		type: String,
-		enum: ['UC','Call','Vacation'],
+		enum: ['UC','Call','Vacation','UCS','UCW'],
 		default: 'UC'
 	},
 	start: Date,

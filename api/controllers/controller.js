@@ -41,7 +41,7 @@ var processShiftToSend = function(shift, name) {
 //API health check
 exports.check_api = function(req, res) {
   //TODO -- fix automatic version population
-  res.send('The API is running. Version number 1.0.7.');
+  res.send('The API is running. Version number 1.1.2.');
 };
 //serving site pages
 exports.get_index = function(req, res) {

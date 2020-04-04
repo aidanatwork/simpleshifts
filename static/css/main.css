@@ -47,7 +47,17 @@
 .fc-event.UC, .fc-event-dot.UC {
 	background-color: blue;
 	border-color: blue;
-} 
+}
+
+.fc-event.UCS, .fc-event-dot.UCS {
+	  background-color: green;
+	  border-color: green;
+  }
+
+.fc-event.UCW, .fc-event-dot.UCW {
+	background-color: purple;
+	border-color: purple;
+}
 
 .fc-event.Call, .fc-event-dot.Call {
 	background-color: red;
@@ -81,7 +91,7 @@
 }
 /* END shift icons */
 
-.fc-event.selected, .fc-event.Call.selected,  .fc-event.UC.selected, .fc-event.Vacation.selected {
+.fc-event.selected, .fc-event.Call.selected,  .fc-event.UC.selected, .fc-event.Vacation.selected, .fc-event.UCS.selected, .fc-event.UCW.selected {
 	border: #f7c602 solid 3px;
 }
 
@@ -176,6 +186,38 @@ div.fc-button-group {
 	background: blue url(/static/img/nighticon.png);
 	background-size: 100% 100%
 }
+/* START urgent care sick and well */
+.fc-list-view .UCS span.fc-event-dot {
+	background-color: green;
+}
+.fc-list-view .UCS span.fc-event-dot {
+	background-color: green;
+}
+.fc-list-view .UCS.day .fc-event-dot {
+	background: green url(/static/img/dayicon.png);
+	background-size: 100% 100%
+}
+.fc-list-view .UCS.night .fc-event-dot {
+	background: green url(/static/img/nighticon.png);
+	background-size: 100% 100%
+}
+
+.fc-list-view .UCW span.fc-event-dot {
+	background-color: purple;
+}
+.fc-list-view .UCW span.fc-event-dot {
+	background-color: purple;
+}
+.fc-list-view .UCW.day .fc-event-dot {
+	background: purple url(/static/img/dayicon.png);
+	background-size: 100% 100%
+}
+.fc-list-view .UCW.night .fc-event-dot {
+	background: purple url(/static/img/nighticon.png);
+	background-size: 100% 100%
+}
+/* END urgent care sick and well */
+
 .fc-list-view .Call .fc-event-dot {
 	background-color: red;
 }

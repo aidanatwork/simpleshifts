@@ -95,7 +95,7 @@ $(document).ready(function() {
 	};
 	var getShiftType = function (classList) {
 		for (var i=0; i<classList.length; i++) {
-			    if (classList[i] === 'UC' || classList[i] === 'Call' || classList[i] === 'Vacation') {
+			    if (classList[i] === 'UC' || classList[i] === 'Call' || classList[i] === 'Vacation' || classList[i] === 'UCS' || classList[i] === 'UCW' ) {
 		        return classList[i];
 		        break;
 		    } else if (i === classList.length-1) {

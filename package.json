@@ -37,7 +37,7 @@
     "fullcalendar": "^3.8.2",
     "http": "0.0.0",
     "https": "^1.0.0",
-    "jquery": ">=3.4.0",
+    "jquery": ">=3.5.0",
     "jquery-datepicker": "^1.11.5",
     "jsondiffpatch": "^0.3.8",
     "kind-of": ">=6.0.3",

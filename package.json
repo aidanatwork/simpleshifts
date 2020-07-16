@@ -41,7 +41,7 @@
     "jquery-datepicker": "^1.11.5",
     "jsondiffpatch": "^0.3.8",
     "kind-of": ">=6.0.3",
-    "lodash": ">=4.17.13",
+    "lodash": ">=4.17.19",
     "lodash.pick": "^4.4.0",
     "method-override": "^2.3.10",
     "minimist": ">=1.2.3",

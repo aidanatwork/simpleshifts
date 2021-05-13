@@ -52,7 +52,7 @@
     "mongoose-history": "^0.6.0",
     "morgan": ">=1.9.1",
     "nocache": "^2.0.0",
-    "nodemailer": "^4.6.8",
+    "nodemailer": "^6.4.16",
     "omit-deep": "^0.3.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

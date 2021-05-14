@@ -20,6 +20,9 @@
   "devDependencies": {
     "nodemon": "^1.18.6"
   },
+  "optionalDependencies": {
+    "fsevents": "^2.0.1"
+  },
   "dependencies": {
     "async": "^2.6.0",
     "base": "^3.0.0",
@@ -33,7 +36,6 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "fs": "0.0.1-security",
-    "fsevents": "^2.0.1",
     "fullcalendar": "^3.10.2",
     "http": "0.0.0",
     "https": "^1.0.0",

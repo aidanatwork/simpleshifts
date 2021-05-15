@@ -30,7 +30,7 @@ var Content      = require('./api/models/contentModel');
 
 //options for secure server
 var options = {
-  key: fs.readFileSync(instance.options.key),
+  key: instance.options.key,//fs.readFileSync(instance.options.key),
   cert: fs.readFileSync(instance.options.cert)
 };
 

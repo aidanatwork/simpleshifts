@@ -64,4 +64,4 @@ typings/
 .idea
 
 #SimpleShifts instance.js file
-config/instance.js
+# config/instance.js

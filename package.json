@@ -24,7 +24,7 @@
     "fsevents": "^2.0.1"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^3.2.2",
     "base": "^3.0.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",

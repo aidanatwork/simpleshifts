@@ -1,6 +1,6 @@
 # SimpleShifts
 
-WARNING: This application is no longer maintained, and is not guaranteed to work or to be secure. Do not install.
+⚠️ WARNING: This application is no longer maintained, and is not guaranteed to work or to be secure. Do not install.
 
 A simple call-scheduling calendar for physician offices. You'll need some experience as a web developer to get this up and running.
 

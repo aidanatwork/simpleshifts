@@ -5,7 +5,7 @@
 A simple call-scheduling calendar for physician offices. You'll need some experience as a web developer to get this up and running.
 
 - **Documentation:** https://github.com/aidanatwork/simpleshifts/wiki
-- **Example Instance:** [https://simpleshifts.io](https://smfpcal.com/)
+- **Example Instance:** [https://smfpcal.com/](https://smfpcal.com/)
 - **Backlog:** 
     - Create a history page that logs what changes were made to DB (Create, Remove, Update, Delete) and by what user
     - Add progress bar for loading shifts on visit
